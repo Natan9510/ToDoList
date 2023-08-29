@@ -1,8 +1,15 @@
 package com.example.todolist
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.View.OnClickListener
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,19 +24,39 @@ import com.example.todolist.ui.theme.ToDoListTheme
 
 class MainActivity : ComponentActivity() {
 
+    val TAG: String = "zlo"
+
     lateinit var recyclerView: RecyclerView
     var diffCallBack: DiffCallBack = DiffCallBack()
     var myAdapter: MyAdapter = MyAdapter(diffCallBack)
 
     var toDoListItem: ArrayList<ToDoListItem> = ArrayList()
 
+    var saveButton: Button? = null
+
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // There are no request codes
+            val data: Intent? = result.data
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: main")
+        setContentView(R.layout.activity_main)
+
         //data class - todolist item
         //описати все, шо буде відб = id, text, checkbox (стан цього чекбокса - буліан змінна ро дефолту false
         //коли нажим на чекбокс , то взяти елемент списка
         //коли зміню, то треба засабмітити новий список в адаптер
-        setContentView(R.layout.activity_main)
+
+        findViewById<Button>(R.id.fab).setOnClickListener(object: View.OnClickListener{
+            override fun onClick(p0: View?) {
+                val intent: Intent = Intent(baseContext, AddNewTaskActivity::class.java)
+                startForResult.launch(intent)
+            }
+        })
 
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -41,6 +68,11 @@ class MainActivity : ComponentActivity() {
 
         recyclerView.adapter = myAdapter
         myAdapter.submitList(toDoListItem)
+    }
+
+    fun openActivityForResult() {
+        val intent = Intent(this, AddNewTaskActivity::class.java)
+        startForResult.launch(intent)
     }
 }
 

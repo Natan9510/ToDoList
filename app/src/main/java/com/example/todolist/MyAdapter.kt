@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 class MyAdapter(diffCallback: DiffUtil.ItemCallback<ToDoListItem>):
     ListAdapter<ToDoListItem, MyAdapter.MyViewHolder>(diffCallback) {
 
+    var taskList: ArrayList<ToDoListItem>? = null
+
     class MyViewHolder(var itemView: View): RecyclerView.ViewHolder(itemView) {
         var checkBox: CheckBox = itemView.findViewById(R.id.checkbox)
         var text: TextView = itemView.findViewById(R.id.edit_text)
