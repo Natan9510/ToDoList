@@ -10,13 +10,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ToDoList"
-        tools:targetApi="31">
+        android:theme="@style/Theme.ToDoList">
+<!--        <activity-->
+<!--            android:name=".TestActivity"-->
+<!--            android:exported="false" />-->
         <activity
-            android:name=".TestActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".Test"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ToDoList">
@@ -26,10 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AddNewTaskActivity"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light" />
+<!--        <activity-->
+<!--            android:name=".AddNewTaskActivity"-->
+<!--            android:parentActivityName=".MainActivity"-->
+<!--            android:theme="@style/Theme.AppCompat.Light" />-->
     </application>
 
 </manifest>
