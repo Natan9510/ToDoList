@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import androidx.room.Room.databaseBuilder
 import kotlinx.coroutines.launch
 
-class AddNewTaskActivity : AppCompatActivity() {
+class AddNewTaskActivity : ComponentActivity() {
 
     val TAG: String = "zlo"
 

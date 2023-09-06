@@ -15,7 +15,7 @@
 <!--            android:name=".TestActivity"-->
 <!--            android:exported="false" />-->
         <activity
-            android:name=".Test"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ToDoList">
@@ -25,10 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity-->
-<!--            android:name=".AddNewTaskActivity"-->
-<!--            android:parentActivityName=".MainActivity"-->
-<!--            android:theme="@style/Theme.AppCompat.Light" />-->
+        <activity
+            android:name=".AddNewTaskActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
