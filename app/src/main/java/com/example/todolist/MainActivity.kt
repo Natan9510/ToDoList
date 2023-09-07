@@ -96,7 +96,7 @@ class MainActivity : ComponentActivity() {
             // Collect latest Це вставляння труби в потік для отримання останніх данних
             appDataBase.todoDao.observeAllItems()
                 .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED) //на якій етапі цикла підписуватись на цей flow
-                .distinctUntilChanged() //щоб повідомляло тільки, коли саме по нашій табличці в базі щось мінялось, а не взагалі по всій базі
+                .distinctUntilChanged() //щоб повідомляло тільки тоді, коли саме по нашій табличці в базі щось мінялось, а не взагалі по всій базі
                 .collectLatest { todoListEntities ->
                 Log.d(TAG, "collect: ")
                 val toDoList = todoListEntities.map {

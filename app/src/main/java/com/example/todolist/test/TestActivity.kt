@@ -1,11 +1,11 @@
-package com.example.todolist
+package com.example.todolist.test
 
 import android.os.Bundle
-import android.telecom.Call
 import android.util.Log
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.todolist.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,7 +31,7 @@ class TestActivity : ComponentActivity() {
 //                Log.d(TAG, "callback")
 //            }
 
-            runAsync2(object : Callback2{
+            runAsync2(object : Callback2 {
                 override fun runCallback2() {
                     button1?.text = "hello"
                 }

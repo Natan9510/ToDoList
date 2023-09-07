@@ -1,9 +1,9 @@
-package com.example.todolist
+package com.example.todolist.test
 
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
+import com.example.todolist.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
