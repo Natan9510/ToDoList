@@ -1,4 +1,4 @@
-package com.example.todolist
+package com.example.todolist.test
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -24,24 +24,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.example.todolist.AddNewTaskActivity
+import com.example.todolist.AppDataBase
+import com.example.todolist.DiffCallBack
+import com.example.todolist.R
+import com.example.todolist.ToDoListItem
 import com.example.todolist.ui.theme.ToDoListTheme
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
-class MainActivity : ComponentActivity() {
+class TestTodoActivity : ComponentActivity() {
 
     val TAG: String = "zlo"
 
     lateinit var recyclerView: RecyclerView
-    var diffCallBack: DiffCallBack = DiffCallBack()
-    var myAdapter: MyAdapter =
-        MyAdapter(itemCheckedCallBack = { id, isChecked -> updateCheckState(id, isChecked) })
-
-    var toDoListItem: ArrayList<ToDoListItem> = ArrayList()
-
-    var saveButton: Button? = null
+    var myAdapter: MyAdapterTest =
+        MyAdapterTest(itemCheckedCallBack = { id, isChecked -> updateCheckState(id, isChecked) })
 
     lateinit var appDataBase: AppDataBase
 
@@ -102,24 +102,27 @@ class MainActivity : ComponentActivity() {
                 .collectLatest { todoListEntities ->
                     Log.d(TAG, "collect: ")
                     val toDoList = todoListEntities.map {
-                        ToDoListItem(it.todoId ?: 0, it.text, it.isChecked)
+                        ToDoBaseListItem.ToDoListItem(it.todoId ?: 0, it.text, it.isChecked)
                     }
 
-                    val toDoListSorted = toDoList.sortedBy { it.isChecked }
+                    val toDoListSorted: MutableList<ToDoBaseListItem> =
+                        toDoList.sortedBy { it.isChecked }.toMutableList()
+                    val firstCheckedItemPosition =
+                        toDoListSorted.indexOfFirst { (it as? ToDoBaseListItem.ToDoListItem)?.isChecked == true }
+                    if (firstCheckedItemPosition == -1) {
+                        // Don't need to add header if there is no any checked item
+                    } else {
+                        toDoListSorted.add(
+                            firstCheckedItemPosition,
+                            ToDoBaseListItem.CheckedItemsHeader("Checked items")
+                        )
+                    }
 
                     myAdapter.submitList(toDoListSorted)
                 }
         }
     }
 
-    private fun fetchAndDisplayTodoItems() {
-        lifecycleScope.launch {
-            val toDoList = appDataBase.todoDao.getAll().map {
-                ToDoListItem(it.todoId ?: 0, it.text, it.isChecked)
-            }
-            myAdapter.submitList(toDoList)
-        }
-    }
 
     override fun onStart() {
         super.onStart()
