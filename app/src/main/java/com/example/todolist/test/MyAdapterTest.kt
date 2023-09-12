@@ -9,10 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todolist.DiffCallBack
-import com.example.todolist.MyAdapter
 import com.example.todolist.R
-import com.example.todolist.ToDoListItem
 import java.lang.IllegalArgumentException
 
 class MyAdapterTest(private val itemCheckedCallBack: (Int, Boolean) -> Unit) :

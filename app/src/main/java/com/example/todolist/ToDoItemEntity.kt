@@ -8,7 +8,7 @@ class ToDoItemEntity(
     @PrimaryKey(autoGenerate = true)
     val todoId: Int? = null,
     val text: String,
-    val isChecked: Boolean = false){
+    var isChecked: Boolean = false){
 
 }
 

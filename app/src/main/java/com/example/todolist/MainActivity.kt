@@ -32,16 +32,14 @@ import kotlin.concurrent.thread
 
 class MainActivity : ComponentActivity() {
 
+    //зробити, щоб підраховувало кількість чекнутих айтемів і відображало в хедері
+
     val TAG: String = "zlo"
 
     lateinit var recyclerView: RecyclerView
-    var diffCallBack: DiffCallBack = DiffCallBack()
+
     var myAdapter: MyAdapter =
         MyAdapter(itemCheckedCallBack = { id, isChecked -> updateCheckState(id, isChecked) })
-
-    var toDoListItem: ArrayList<ToDoListItem> = ArrayList()
-
-    var saveButton: Button? = null
 
     lateinit var appDataBase: AppDataBase
 
@@ -72,11 +70,6 @@ class MainActivity : ComponentActivity() {
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-//        toDoListItem.add(ToDoListItem(1, "Potato 1", false))
-//        toDoListItem.add(ToDoListItem(2, "Potato 2", false))
-//        toDoListItem.add(ToDoListItem(3, "Potato 3", true))
-//        toDoListItem.add(ToDoListItem(4, "Potato 4", true))
-
         recyclerView.adapter = myAdapter
         subscribeForTodoItems()
     }
@@ -90,7 +83,6 @@ class MainActivity : ComponentActivity() {
 //            myAdapter.submitList(toDoList)
 //        })
 
-
         lifecycleScope.launch {
             // Collect latest Це вставляння труби в потік для отримання останніх данних
             appDataBase.todoDao.observeAllItems()
@@ -101,23 +93,29 @@ class MainActivity : ComponentActivity() {
                 .distinctUntilChanged() //щоб повідомляло тільки тоді, коли саме по нашій табличці в базі щось мінялось, а не взагалі по всій базі
                 .collectLatest { todoListEntities ->
                     Log.d(TAG, "collect: ")
+
                     val toDoList = todoListEntities.map {
-                        ToDoListItem(it.todoId ?: 0, it.text, it.isChecked)
+                        TodoBaseListItem.ToDoListItem(it.todoId ?: 0, it.text, it.isChecked)
                     }
+                    val count = toDoList.count { it.isChecked }
 
-                    val toDoListSorted = toDoList.sortedBy { it.isChecked }
+                    val toDoListSorted: MutableList<TodoBaseListItem> =
+                        toDoList.sortedBy { it.isChecked }.toMutableList()
 
+                    //indexOfFirst - Returns index of the first element matching the given predicate, or -1 if the list does not contain such element.
+                    val firstCheckedItemPosition =
+                        toDoListSorted.indexOfFirst { (it as? TodoBaseListItem.ToDoListItem)?.isChecked == true }
+
+                    if (firstCheckedItemPosition == -1) {
+                        // Don't need to add header if there is no any checked item
+                    } else {
+                        toDoListSorted.add(
+                            firstCheckedItemPosition,
+                            TodoBaseListItem.CheckedItemsHeader("$count Checked items")
+                        )
+                    }
                     myAdapter.submitList(toDoListSorted)
                 }
-        }
-    }
-
-    private fun fetchAndDisplayTodoItems() {
-        lifecycleScope.launch {
-            val toDoList = appDataBase.todoDao.getAll().map {
-                ToDoListItem(it.todoId ?: 0, it.text, it.isChecked)
-            }
-            myAdapter.submitList(toDoList)
         }
     }
 
