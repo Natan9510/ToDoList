@@ -1,58 +1,34 @@
-package com.example.todolist
+package com.example.todolist.test
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.EditText
+import android.widget.DatePicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import androidx.room.Room.databaseBuilder
-import kotlinx.coroutines.launch
+import com.example.todolist.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class AddNewTaskActivity : ComponentActivity() {
+class DatePickerTest: ComponentActivity() {
 
-    val TAG: String = "zlo"
-
-    var saveButton: Button? = null
-    lateinit var editText: EditText
     lateinit var selectDateTextView: TextView
     lateinit var selectDateButton: Button
     private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.add_todo_item)
+        setContentView(R.layout.date_picker_test)
 
-        Log.d(TAG, "onCreate: add new task activity")
-
-        saveButton = findViewById(R.id.save_button)
-        editText = findViewById(R.id.editText)
-
-        selectDateTextView = findViewById(R.id.select_text_view)
+        selectDateTextView = findViewById(R.id.selected_date_textView)
         selectDateButton = findViewById(R.id.select_date_button)
 
         selectDateButton.setOnClickListener{
             showDatePicker()
         }
 
-        val db = Room.databaseBuilder(applicationContext, AppDataBase::class.java, "database-name")
-            .build()
-
-        val taskDao: ToDoDAO = db.todoDao
-
-        saveButton?.setOnClickListener {
-            lifecycleScope.launch {
-                taskDao.insert(ToDoItemEntity(text = editText.text.toString(), selectedTime = selectDateTextView.text.toString())) //// toString ?????????????
-            }
-            finish()
-        }
     }
 
     private fun showDatePicker() {

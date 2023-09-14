@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
                     Log.d(TAG, "collect: ")
 
                     val toDoList = todoListEntities.map {
-                        TodoBaseListItem.ToDoListItem(it.todoId ?: 0, it.text, it.isChecked)
+                        TodoBaseListItem.ToDoListItem(it.todoId ?: 0, it.text, it.isChecked, it.selectedTime)
                     }
                     val count = toDoList.count { it.isChecked }
 

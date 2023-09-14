@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.DatePicker
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -44,6 +45,8 @@ class MyAdapter(private val itemCheckedCallBack: (Int, Boolean) -> Unit):
             val toDoListItem = getItem(position) as TodoBaseListItem.ToDoListItem
             holder.checkBox.isChecked = toDoListItem.isChecked
             holder.textView.text = toDoListItem.text
+            holder.selectedDate.text = toDoListItem.selectedTime
+
             if(toDoListItem.isChecked){
                 holder.textView.paintFlags = holder.textView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }else{
@@ -59,6 +62,7 @@ class MyAdapter(private val itemCheckedCallBack: (Int, Boolean) -> Unit):
     class MyViewHolder(var itemView: View): RecyclerView.ViewHolder(itemView) {
         var checkBox: CheckBox = itemView.findViewById(R.id.checkbox)
         var textView: TextView = itemView.findViewById(R.id.edit_text)
+        var selectedDate: TextView = itemView.findViewById(R.id.date_selected_text_view)
     }
 
     class CheckedItemsHeaderViewHolder(val itemView: View): RecyclerView.ViewHolder(itemView){
